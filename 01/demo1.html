@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <script>
+    function sum(x,y){
+    	var a=b=0;
+    }
+    // console.log(b);
+    var a=1;
+    b=2;
+    (function(){
+    	c=3;
+    }());
+    delete a;//true
+    delete b;//false隐式全局变量作为全局对象的一个属性，可以使用delete删除
+    delete c;//false
+
+    console.log(a);
+    // console.log(b);
+    // console.log(c);
+
+    var globe=(function(){
+    	return this;
+    }());
+    console.log(globe);//函数不以new操作符调用时，返回全局对象
+
+    var come="koko";
+    function fun(){
+    	// alert(come);//undenfined
+    	var come="jiji";
+    	// alert(come);
+    }
+    fun();
+    for(var i=9;i>0;i--){
+    	console.log(i);
+    }
+    if(typeof Object.prototype.clone=="undefined"){
+    	Object.prototype.clone=function(){};
+    };
+    var man={
+    	legs:2,
+    	hands:2,
+    	head:1
+    }
+    for(i in man){
+    	if(man.hasOwnProperty(i)){
+    		console.log(i+":"+man[i]);
+    	}
+    }
+    </script>
+</body>
+</html>
