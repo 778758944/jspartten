@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <script>
+    var o=new Object(1);
+    console.log(o.constructor);
+    console.log(o);;
+
+    var o2=new Object("hahah");
+    console.log(o2.constructor);
+    console.log(o2);
+    console.log(o2[1]);
+
+    var o3=new Object(true);
+    console.log(o3);
+    console.log(o3.constructor);
+    //new Object()方法随着传入参数的不同，最后返回的结果类型截然三不同
+
+    //用new调用构造函数时发生的三件事情
+    //1.创建一个空对象并被内部的this引用，同时该空对象继承了构造函数的原型
+    //2.属性和方法被加入到这个空对象中
+    //3.最后隐式返回this(如果没有显示的返回其他对象的话)
+
+    var Obj=function(){
+    	this.name="kaka";
+    	var that={};
+    	that.name="messi";
+    	var name="zili";
+    	// return name;//在返回基本类型的情况下返回this对象
+    	return that;//在返回对象的情况下返回对象
+    }
+    var obj1=new Obj();
+    console.log(obj1.name);
+
+    //自调用构造函数
+    var Person=function(){
+    	if(!(this instanceof Person)){
+    		return new Person();
+    	}
+    	this.name="longge";
+    }
+    var person=Person();
+    console.log(person.name);
+
+    //检查一个对象是否为数组
+    console.log(typeof []);
+    console.log(Array.isArray([]));
+    console.log(Object.prototype.toString.apply([]));
+    var arr=[];
+    if(Array.isArray === 'undefined'){
+    	Array.isArray=function(arg){
+    		return Object.prototype.toString.apply(arg) === "[object Array]";
+    	}
+    }
+
+    //正则表达式字面量问题现在已经纠正
+    function getre(){
+    	var re=/[a-z]/gi;
+    	re.foo="kk";
+    	return re;
+    }
+    var reg=getre();
+    var reg2=getre();
+
+    console.log(reg === reg2);
+    reg.foo="bb";
+    console.log(reg2.foo);
+
+    //错误对象
+    try{
+    	throw{
+    		name:"error",
+    		message:"you need to chiyao"
+    	}
+    }catch(e){
+    	alert(e.message);
+    }
+
+    </script>
+</body>
+</html>
