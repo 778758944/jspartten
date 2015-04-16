@@ -27,6 +27,9 @@
 
     console.log(add.name);
     console.log(add2.name);
+    console.log(add3.name);
+    console.log(add2);
+    // console.log(add3==add2);
 
 
     //apply在回调模式中的运用
@@ -41,6 +44,121 @@
     var jj={};
     set(jj,myApp.getColor,myApp);
     console.log(jj.color);
+
+    //自定义函数
+    var scareMe=function(){
+        alert("Boo");
+        scareMe=function(){
+            alert("double boo");
+        }
+    }
+    scareMe.property="property";
+    var prank=scareMe;
+    var spoon={
+        boo:scareMe
+    };
+    //在被赋值是只执行原始函数
+    // prank();
+    // prank();
+    //以方法调用只执行原始函数
+    // spoon.boo();
+    // spoon.boo();
+
+    //即使函数
+    (function(){
+        alert("haha");
+    }());
+
+    //即时对象初始化
+    ({
+        maxwidth:600,
+        maxheight:400,
+        getMax:function(){
+            return this.maxwidth+"*"+this.maxheight;
+        },
+        init:function(){
+            console.log(this.getMax());
+        }
+    }).init();
+
+    //初始化分支
+    var until={
+        addListener:null,
+        removeListener:null
+    };
+    if(window.addEventListener){
+        until.addListener=function(el,type,fn){
+            el.addEventListener(typr,fn,false);
+        }
+    }else if(window.attachEvent){
+        until.addListener=function(el,type,fn){
+            el.attachEvent("on"+type,fn);
+        };
+        until.removeListener=function(el,type,fn){
+            el.removeEvent("on"+type,fn);
+        }
+    }else{
+        until.addListener=function(el,type,fn){
+            el["on"+type]=fn;
+        }
+        until.removeListener=function(el,type,fn){
+            el["on"+type]=null;
+        }
+    }
+
+    //备忘模式
+    var myFun=function(param){
+        if(!myFun.cache[para]){
+            var result={};
+            myFun.cache[param]=result;
+        }
+        return myFun.cache[param];
+    }
+    myFun.cache={};
+
+    //配置对象
+    //当函数的参数足够多的时候，可以采用配置对象的方法
+    // var addPerson=function(a,b,c,d,e){
+
+    // }
+    // var obj={
+    //     "name":a,
+    //     "sex":b,
+    //     "age":c
+    // };
+    // addPerson(obj);
+
+    //函数的部分应用
+    // var add2=function(x,y){
+    //     return x+y;
+    // }
+    // var newadd=add2.partApply(null,[5]);
+    // newadd(null,[4])//9
+
+    //curry化
+    function schonfinkelize(fn){
+        var slice=Array.prototype.slice;
+        var store_args=slice.apply(arguments,[1]);
+        return function(){
+            var new_arguments=slice.call(arguments);
+            console.log(new_arguments);
+            var args=store_args.concat(new_arguments);
+            console.log(args);
+            console.log(fn);
+            return fn.apply(null,args);
+        }
+    };
+    function addd3(a,b,c){
+        return a+b+c;
+    }
+    var newadd=schonfinkelize(addd3,1,2);
+    console.log(newadd(3));
+
+    function addd4(a,b,c,d,e){
+        return a+b+c+d+e
+    }
+    var newadd4=schonfinkelize(addd4,1,2);
+    console.log(schonfinkelize(newadd4,3,4)(5));
     </script>
 </body>
 </html>
