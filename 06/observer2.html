@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <p>game start</p>
+    <div id="result"></div>
+    <script>
+    var publish={
+    	subscribers:{
+    		any:[]
+    	},
+    	on:function(type,fn,context){
+    		fn=typeof fn==="function"? fn:context[fn];//可以传递函数也可以传递字符串的原理
+    		if(this.subscribers[type]==undefined){
+    			this.subscribers[type]=[];
+    		}
+    		this.subscribers[type].push({fn:fn,context:context||this});
+    	},
+    	remove:function(type,fn,context){
+    		this.visitSubscribers("unsubscribers",type,fn,context);
+    	},
+    	fire:function(type,arg){
+    		this.visitSubscribers("publish",type,arg);
+    	},
+    	visitSubscribers:function(action,type,arg,context){
+    		var ptype=type||"any";
+    		subscribers=this.subscribers[ptype];
+    		var i,
+    		    len=subscribers.length;
+    		for(i=0;i<len;i++){
+    			if(action=="publish"){
+    				subscribers[i].fn.call(subscribers[i].context,arg);
+    			}else{
+    				if(subscribers[i].fn==fn&&subscribers[i].context==context){
+    					subscribers.splice(i,1);
+    				}
+    			}
+    		}
+    	}
+    };
+
+    function Play(name,key){
+    	this.points=0;
+    	this.name=name;
+    	this.key=key;
+    	this.fire("newplayer",this);
+    }
+    Play.prototype.play=function(){
+    	this.points++;
+        this.fire("play",this);
+    }
+    var scoreboard={
+        element:document.getElementById("result"),
+        update:function(score){
+            var i,
+                msg="";
+            for(i in score){
+                if(score.hasOwnProperty(i)){
+                    msg+="<p><strong>"+i+"</strong>";
+                    msg+=score[i];
+                    msg+="</p>";
+                }
+                this.element.innerHTML=msg;
+            }
+        }
+    };
+
+    var game={
+        keys:{},
+        addplayer:function(player){
+            var key=player.key.toString().charCodeAt(0);
+            this.keys[key]=player;
+        },
+        handleKeypress:function(e){
+            e=e||window.event;
+            if(game.keys[e.which]){
+                game.keys[e.which].play();
+            }
+        },
+        handlePlay:function(player){
+            var i,
+                players=this.keys,
+                score={};
+
+            for(i in players){
+                if(players.hasOwnProperty(i)){
+                    score[players[i].name]=players[i].points;
+                }
+            }
+            this.fire("scorechange",score);
+        }
+    }
+    function makePublish(obj){
+        var i;
+        for(i in publish){
+            if(publish.hasOwnProperty(i)&&typeof publish[i]=="function"){
+                obj[i]=publish[i];
+            }
+        }
+        obj.subscribers={any:[]};
+        return obj;
+    };
+
+    makePublish(Play.prototype);
+    makePublish(game);
+
+    Play.prototype.on("newplayer","addplayer",game);
+    Play.prototype.on("play","handlePlay",game);
+    game.on("scorechange",scoreboard.update,scoreboard);
+    window.onkeypress=game.handleKeypress;
+
+    var playname,key;
+    while(1){
+        playname=prompt("add name","jack");
+        if(!playname){
+            break;
+        }
+        while(1){
+            key=prompt("key for player");
+            if(key){
+                break;//退出当前循环
+            }
+        }
+        new Play(playname,key);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

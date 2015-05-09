@@ -60,12 +60,23 @@
     	},
     	sunday:function(monthly){
     		console.log("month read a book");
-    	}
+    	},
+        tweet:function(msg){
+            this.publish(msg);
+        }
     }
     paper.sunscribe(joe.drinkCoffie);
     paper.sunscribe(joe.sunday,"month");
 
     paper.daily();
+
+    makePublish(joe);
+    paper.readTweet=function(msg){
+        console.log("someone "+msg);
+    }
+    joe.sunscribe(paper.readTweet);
+    joe.tweet("it is a good news");
+
 
 
 
