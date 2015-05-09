@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <p>game start</p>
+    <div id="result"></div>
+    <script>
+    function Player(name){
+    	this.points=0;
+    	this.name=name;
+    }
+    Player.prototype.played=function(){
+    	this.points++;
+    	mediator.played();
+    }
+    var scoreboard={
+    	element:document.getElementById("result"),
+    	update:function(score){
+    		var i,
+    		    msg="";
+    		for(i in score){
+    			if(score.hasOwnProperty(i)){
+    				msg+="<p><strong>"+i+"</strong>";
+    				msg+=score[i];
+    				msg+="</p>";
+    			}
+    			this.element.innerHTML=msg;
+    		}
+    	}
+    };
+    var mediator={
+    	plays:{},
+    	init:function(){
+    		var player=this.plays;
+    		console.log(this.plays);
+    		player.home=new Player("home");
+    		player.guest=new Player("guest");
+    		console.log(this.plays);
+    	},
+    	//如果有人玩游戏
+    	played:function(){
+    		var player=this.plays;
+    		score={
+    			home:player.home.points,
+    			guest:player.guest.points
+    		};
+    		scoreboard.update(score);
+    	},
+    	//与键盘交互
+    	keydown:function(e){
+    		var player=mediator.plays;
+    		var e=e||window.event;
+    		if(e.which==49){
+    			player.home.played();
+    		}
+    		else if(e.which==48){
+    			player.guest.played();
+    		}
+    	}
+    }
+    mediator.init();
+    document.body.onkeydown=mediator.keydown;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
