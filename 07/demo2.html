@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <div id="wrap">
+    	<button>1</button>
+    	<button>2</button>
+    	<button>3</button>
+    </div>
+    <script>
+    var wrap=document.querySelector("#wrap");
+    wrap.onclick=function(e){
+    	console.log(e.target);//获取事件源
+    	console.log(e.currentTarget);//获取监听源
+    	var src=e.target;
+    	console.log(src.nodeName);
+    	if(src.nodeName.toLowerCase()=="button"){
+    		var points=parseInt(src.innerHTML,10);
+    		points++
+    		src.innerHTML=points;
+    	}
+    	
+    }
+    </script>
+</body>
+</html>
